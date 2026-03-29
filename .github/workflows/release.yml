@@ -46,17 +46,21 @@ jobs:
       - name: Move files
         run: |
           cd build || exit 1
+          # Preserve custom lazy_group.conf before overwriting with build output
+          cp ../release/lazy_group.conf /tmp/lazy_group_custom.conf
           cp *.conf ../release/
+          # Restore custom lazy_group.conf (contains maintained AI proxy rules)
+          cp /tmp/lazy_group_custom.conf ../release/lazy_group.conf
           cp -r figure ../release/
           cp LICENSE ../release/
           cp readme.md ../release/
-      
+
       - name: Update lazy rules
         run: |
           cd release || exit 1
-          rm lazy.conf lazy_group.conf
+          # Only update lazy.conf from upstream; lazy_group.conf is maintained in this repo
+          rm lazy.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
-          curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
         
       - name: Remove commits
         run: |
