@@ -8,7 +8,9 @@ on:
   push:
     branches:
       - build
-    paths-ignore: 
+    tags:
+      - '*'
+    paths-ignore:
       - '**.md'
       - 'LICENSE'
       
